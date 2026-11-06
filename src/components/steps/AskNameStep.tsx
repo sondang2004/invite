@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { motion, useAnimate } from 'motion/react'
+import { logGuestToSheet } from '../../config/event'
 import { fadeUp, pageVariants, popIn, stagger } from '../../lib/motion'
 import { PaperNote } from '../ui/Paper'
 import { GradCap, HeartSticker } from '../ui/Stickers'
@@ -20,6 +21,7 @@ export function AskNameStep({ initialName, onSubmit }: { initialName: string; on
       animate(scope.current, { x: [0, -10, 10, -8, 8, -4, 0] }, { duration: 0.45 })
       return
     }
+    logGuestToSheet(name)
     onSubmit(name)
   }
 

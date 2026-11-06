@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { motion } from 'motion/react'
-import { toPng } from 'html-to-image'
+import { toBlob, toPng } from 'html-to-image'
 import campus from '../../assets/trinh-campus.jpg'
 import cutout from '../../assets/trinh-cutout.png'
 import danceno from '../../assets/trinh-dance-no.png'
@@ -66,14 +66,69 @@ export function InvitationStep({ name, onReplay }: { name: string; onReplay: () 
   }, [])
 
   const save = async () => {
-    if (!cardRef.current || saving) return
+    const el = cardRef.current
+    if (!el || saving) return
     setSaving(true)
     try {
-      const dataUrl = await toPng(cardRef.current, { pixelRatio: 3, cacheBust: true })
-      const a = document.createElement('a')
-      a.href = dataUrl
-      a.download = `thiep-moi-tot-nghiep-${name.replace(/\s+/g, '-')}.png`
-      a.click()
+      await document.fonts?.ready
+      const rect = el.getBoundingClientRect()
+      const width = Math.round(rect.width)
+      const height = Math.round(rect.height)
+      const options = {
+        pixelRatio: 3,
+        cacheBust: false,
+        width,
+        height,
+        backgroundColor: '#fbf8f2',
+        style: {
+          width: `${width}px`,
+          height: `${height}px`,
+          transform: 'none',
+          margin: '0',
+          backgroundColor: '#fbf8f2',
+          backgroundImage:
+            'radial-gradient(ellipse at 20% 10%, #ffffff 0%, transparent 55%), linear-gradient(160deg, #fcfaf5 0%, #f6efe2 55%, #efe6d4 100%)',
+          boxShadow: 'none',
+        },
+      }
+
+      const safeName =
+        name
+          .trim()
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd')
+          .replace(/Đ/g, 'D')
+          .replace(/[^a-zA-Z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .toLowerCase() || 'khach-moi'
+      const fileName = `thiep-tot-nghiep-${safeName}.png`
+
+      // Gọi nháp 1 lần để trình duyệt giải mã hết ảnh trong SVG foreignObject
+      await toPng(el, { ...options, pixelRatio: 1 }).catch(() => {})
+
+      const blob = await toBlob(el, options)
+      if (blob) {
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.style.display = 'none'
+        a.href = url
+        a.download = fileName
+        document.body.appendChild(a)
+        a.click()
+        setTimeout(() => {
+          document.body.removeChild(a)
+          URL.revokeObjectURL(url)
+        }, 1500)
+      } else {
+        const dataUrl = await toPng(el, options)
+        const a = document.createElement('a')
+        a.href = dataUrl
+        a.download = fileName
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+      }
     } catch (err) {
       console.error(err)
       alert('Không lưu được ảnh, bạn thử chụp màn hình giúp mình nha 🥲')
@@ -199,7 +254,7 @@ export function InvitationStep({ name, onReplay }: { name: string; onReplay: () 
           <Piece style={{ top: '79%', left: '20%', right: '2%' }} delay={2.3} from={{ opacity: 0, y: 20 }}>
             <div
               className="grid grid-cols-[auto_auto_1fr] items-center gap-[2.6cqw] text-ink"
-              style={{ ...serifCaps, letterSpacing: '0.06em', textShadow: '0 0 6px #fbf8f2, 0 0 3px #fbf8f2' }}
+              style={{ ...serifCaps, letterSpacing: '0.06em' }}
             >
               <div className="text-center leading-relaxed whitespace-nowrap" style={{ fontSize: '2.7cqw' }}>
                 <p>{EVENT.weekday.toUpperCase()}</p>

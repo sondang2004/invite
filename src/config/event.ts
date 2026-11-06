@@ -29,3 +29,30 @@ export function calendarUrl(guest: string): string {
   return `https://calendar.google.com/calendar/render?${params.toString()}`
 }
 
+/**
+ * Dán link Web App của Google Apps Script (`https://script.google.com/macros/s/.../exec`)
+ * vào đây (hoặc đặt biến môi trường `VITE_SHEET_WEBHOOK_URL` trên Vercel).
+ */
+export const GOOGLE_SHEET_WEBHOOK_URL: string =
+  import.meta.env.VITE_SHEET_WEBHOOK_URL ?? 'https://script.google.com/macros/s/AKfycbyCDgIKP3tOwlnQDXpNoIbuHqo4TKfSKNQwxuyj8se6nQ2ip8jm5tGiYk8qc_9XW2Pd/exec'
+
+/** Gửi ngầm tên khách mời về Google Sheets (không chặn giao diện nếu lỗi mạng) */
+export function logGuestToSheet(name: string): void {
+  const url = GOOGLE_SHEET_WEBHOOK_URL.trim()
+  if (!url) return
+  try {
+    void fetch(url, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        name,
+        time: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }),
+        userAgent: navigator.userAgent,
+      }),
+    })
+  } catch {
+    /* ignore */
+  }
+}
+
