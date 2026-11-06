@@ -269,6 +269,21 @@ export function InvitationStep({ name, onReplay }: { name: string; onReplay: () 
               </div>
             </div>
           </Piece>
+
+          {/* Số điện thoại liên hệ ở chân thiệp */}
+          <Piece style={{ bottom: '3%', left: '8%', right: '8%' }} delay={2.5} from={{ opacity: 0, y: 12 }}>
+            <div className="flex items-center justify-center gap-[2.5cqw] text-ink/85">
+              <div className="h-px flex-1 bg-brown/35" />
+              <a
+                href={`tel:${EVENT.phoneRaw}`}
+                className="whitespace-nowrap transition-colors hover:text-crimson"
+                style={{ ...serifCaps, fontSize: '2.55cqw', letterSpacing: '0.1em' }}
+              >
+                LIÊN HỆ · <span className="font-semibold text-brown">{EVENT.phone}</span> ({EVENT.hostShort.toUpperCase()})
+              </a>
+              <div className="h-px flex-1 bg-brown/35" />
+            </div>
+          </Piece>
         </div>
       </motion.div>
 

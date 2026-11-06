@@ -9,6 +9,8 @@ export const EVENT = {
   weekday: 'Thứ Năm',
   date: '12.11.2026',
   time: '10:00 - 12:00',
+  phone: '0906 849 789',
+  phoneRaw: '0906849789',
   /** Giờ UTC (10:00–12:00 giờ VN = 03:00–05:00 UTC) */
   startUtc: '20261112T030000Z',
   endUtc: '20261112T050000Z',
