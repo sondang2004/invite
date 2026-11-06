@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-import cutout from '../../assets/trinh-cutout.png'
+// import cutout from '../../assets/trinh-cutout.png'
+import cute from '../../assets/trinh-cute.jpg'
 import { EVENT } from '../../config/event'
 import { bouncySpring, fadeUp, pageVariants, popIn, stagger } from '../../lib/motion'
 import { HandwrittenText } from '../ui/Paper'
@@ -73,7 +74,8 @@ export function WelcomeStep({ onNext }: { onNext: () => void }) {
         className="relative z-0 mt-4 drop-shadow-[0_15px_20px_rgba(31,42,92,0.25)]"
       >
         <img
-          src={cutout}
+          // src={cutout}
+          src={cute}
           alt={EVENT.host}
           draggable={false}
           className="h-[36dvh] w-auto object-contain"

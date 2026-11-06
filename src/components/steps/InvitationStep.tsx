@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { toPng } from 'html-to-image'
 import campus from '../../assets/trinh-campus.jpg'
 import cutout from '../../assets/trinh-cutout.png'
+import danceno from '../../assets/trinh-dance-no.png'
 import { EVENT, MAPS_URL, calendarUrl } from '../../config/event'
 import { bouncySpring, easeOutExpo } from '../../lib/motion'
 import { sideConfetti } from '../effects/confetti'
@@ -144,8 +145,8 @@ export function InvitationStep({ name, onReplay }: { name: string; onReplay: () 
               className="h-full w-auto object-contain"
               draggable={false}
               style={{
-                maskImage: 'linear-gradient(180deg, #000 55%, rgba(0,0,0,0.35) 80%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(180deg, #000 55%, rgba(0,0,0,0.35) 80%, transparent 100%)',
+                maskImage: 'linear-gradient(180deg, #000 45%, rgba(0,0,0,0.25) 68%, transparent 85%)',
+                WebkitMaskImage: 'linear-gradient(180deg, #000 45%, rgba(0,0,0,0.25) 68%, transparent 85%)',
               }}
             />
           </Piece>
@@ -190,20 +191,23 @@ export function InvitationStep({ name, onReplay }: { name: string; onReplay: () 
           </Piece>
 
           {/* Ảnh nhỏ góc trái dưới */}
-          <Piece style={{ top: '74.5%', left: '3%', height: '13.5%' }} delay={2.1} from={{ opacity: 0, scale: 0.5 }}>
-            <img src={cutout} alt="" className="h-full w-auto object-contain" style={{ transform: 'scaleX(-1) rotate(-4deg)' }} draggable={false} />
+          <Piece style={{ top: '77.5%', left: '3%', height: '13.5%' }} delay={2.1} from={{ opacity: 0, scale: 0.5 }}>
+            <img src={danceno} alt="" className="h-full w-auto object-contain" style={{ transform: 'rotate(-4deg)' }} draggable={false} />
           </Piece>
 
           {/* Thông tin */}
-          <Piece style={{ top: '78.5%', left: '19%', right: '3%' }} delay={2.3} from={{ opacity: 0, y: 20 }}>
-            <div className="grid grid-cols-[auto_auto_1fr] items-center gap-[3cqw] text-ink" style={{ ...serifCaps, letterSpacing: '0.08em' }}>
-              <div className="text-center leading-relaxed" style={{ fontSize: '2.8cqw' }}>
+          <Piece style={{ top: '79%', left: '20%', right: '2%' }} delay={2.3} from={{ opacity: 0, y: 20 }}>
+            <div
+              className="grid grid-cols-[auto_auto_1fr] items-center gap-[2.6cqw] text-ink"
+              style={{ ...serifCaps, letterSpacing: '0.06em', textShadow: '0 0 6px #fbf8f2, 0 0 3px #fbf8f2' }}
+            >
+              <div className="text-center leading-relaxed whitespace-nowrap" style={{ fontSize: '2.7cqw' }}>
                 <p>{EVENT.weekday.toUpperCase()}</p>
                 <p>{EVENT.date}</p>
                 <p>{EVENT.time}</p>
               </div>
               <div className="h-[15cqw] w-px bg-brown/60" />
-              <div className="text-center leading-relaxed" style={{ fontSize: '2.8cqw' }}>
+              <div className="text-center leading-relaxed whitespace-nowrap" style={{ fontSize: '2.5cqw' }}>
                 <p>{EVENT.school.toUpperCase()}</p>
                 <p>306 VÕ VĂN HÁT, LONG TRƯỜNG</p>
                 <p>HỒ CHÍ MINH</p>
