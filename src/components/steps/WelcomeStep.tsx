@@ -1,21 +1,18 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
-// import cutout from '../../assets/trinh-cutout.png'
-import cute from '../../assets/trinh-cute.jpg'
 import { EVENT } from '../../config/event'
 import { bouncySpring, fadeUp, pageVariants, popIn, stagger } from '../../lib/motion'
-import { HandwrittenText } from '../ui/Paper'
-import { CrownSticker, HeartSticker, OutlineStar, StarSticker } from '../ui/Stickers'
+import { GoldDivider, GraduationCrest } from '../ui/Stickers'
 
-const TITLE = 'Lễ Tốt Nghiệp'.split(' ')
+const TITLE = 'LỄ TỐT NGHIỆP'.split(' ')
 
-/** Step 3: Chào mừng đến lễ tốt nghiệp của Tố Trinh */
+/** Step 3: Màn chào mừng phong cách nam tính – không dùng ảnh, dùng huy hiệu & typography sắc nét */
 export function WelcomeStep({ onNext }: { onNext: () => void }) {
   const [showBtn, setShowBtn] = useState(false)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setShowBtn(true), 2600)
-    const t2 = setTimeout(onNext, 9000)
+    const t1 = setTimeout(() => setShowBtn(true), 2300)
+    const t2 = setTimeout(onNext, 8500)
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
@@ -28,64 +25,70 @@ export function WelcomeStep({ onNext }: { onNext: () => void }) {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="relative z-10 flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 pt-10"
+      className="relative z-10 flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 py-12"
     >
-      {/* Sticker bay vào */}
-      <motion.div variants={stagger(0.15, 1.2)} initial="hidden" animate="show" className="pointer-events-none absolute inset-0">
-        <motion.div variants={popIn} className="absolute top-[9%] left-[8%] w-12 -rotate-12">
-          <HeartSticker />
-        </motion.div>
-        <motion.div variants={popIn} className="absolute top-[12%] right-[10%] w-14 rotate-12">
-          <CrownSticker />
-        </motion.div>
-        <motion.div variants={popIn} className="absolute top-[42%] left-[6%] w-8">
-          <StarSticker />
-        </motion.div>
-        <motion.div variants={popIn} className="absolute right-[8%] bottom-[30%] w-9">
-          <OutlineStar />
-        </motion.div>
-      </motion.div>
+      {/* Vòng sáng mờ phía sau */}
+      <div
+        className="pointer-events-none absolute top-1/2 left-1/2 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-35 blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(56,189,248,0.28), rgba(228,190,106,0.16) 55%, transparent 75%)' }}
+      />
 
-      <motion.div variants={stagger(0.12, 0.3)} initial="hidden" animate="show" className="relative z-10 text-center">
-        <motion.p variants={fadeUp} className="text-xs font-medium tracking-[0.35em] text-brown uppercase sm:text-sm">
+      <motion.div variants={stagger(0.14, 0.2)} initial="hidden" animate="show" className="relative z-10 flex max-w-md flex-col items-center text-center">
+        {/* Huy hiệu tốt nghiệp lục giác */}
+        <motion.div variants={popIn} className="relative mb-6 flex items-center justify-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+            className="absolute h-40 w-40 rounded-full border border-dashed border-gold/25"
+          />
+          <GraduationCrest className="h-32 w-32 drop-shadow-[0_0_24px_rgba(228,190,106,0.28)]" />
+        </motion.div>
+
+        <motion.p variants={fadeUp} className="text-[11px] font-semibold tracking-[0.4em] text-bk-blue uppercase sm:text-xs">
           Chào mừng bạn đến với
         </motion.p>
-        <h1 className="mt-3 font-serif text-[2.6rem] leading-tight font-semibold text-ink sm:text-6xl">
+
+        <h1 className="mt-3 font-serif text-[2.4rem] leading-tight font-bold tracking-[0.08em] text-ivory sm:text-5xl">
           {TITLE.map((w, i) => (
             <motion.span key={i} variants={fadeUp} className="mr-[0.25em] inline-block last:mr-0">
               {w}
             </motion.span>
           ))}
         </h1>
-        <motion.p variants={fadeUp} className="mt-2 text-lg text-ink/70 italic">
+
+        <motion.div variants={fadeUp} className="my-4 w-52">
+          <GoldDivider />
+        </motion.div>
+
+        <motion.p variants={fadeUp} className="text-xs tracking-[0.3em] text-muted uppercase">
           của
         </motion.p>
-        <div className="mt-1">
-          <HandwrittenText delay={1.3} duration={1.6} className="font-script text-6xl text-crimson sm:text-7xl">
-            {EVENT.hostShort}
-          </HandwrittenText>
-        </div>
+
+        <motion.h2
+          variants={fadeUp}
+          className="gold-text mt-2 font-serif text-3xl font-bold tracking-[0.1em] uppercase sm:text-5xl"
+        >
+          {EVENT.host}
+        </motion.h2>
+
+        <motion.p
+          variants={fadeUp}
+          className="mt-4 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-midnight/70 px-4 py-1.5 text-xs font-medium tracking-[0.18em] text-ivory/90 uppercase backdrop-blur-sm"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-bk-blue" />
+          {EVENT.school}
+        </motion.p>
       </motion.div>
 
-      <motion.div
-        initial={{ y: 160, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1.8, type: 'spring', stiffness: 70, damping: 14 }}
-        className="relative z-0 mt-4 drop-shadow-[0_15px_20px_rgba(31,42,92,0.25)]"
-      >
-        <img
-          // src={cutout}
-          src={cute}
-          alt={EVENT.host}
-          draggable={false}
-          className="h-[36dvh] w-auto object-contain"
-          style={{ maskImage: 'linear-gradient(180deg, #000 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(180deg, #000 80%, transparent 100%)' }}
-        />
-      </motion.div>
-
-      <div className="absolute bottom-[max(2rem,env(safe-area-inset-bottom))] z-20 h-12">
+      <div className="mt-12 h-12">
         {showBtn && (
-          <motion.button initial={{ opacity: 0, y: 20, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} transition={bouncySpring} onClick={onNext} className="btn">
+          <motion.button
+            initial={{ opacity: 0, y: 20, scale: 0.92 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={bouncySpring}
+            onClick={onNext}
+            className="btn"
+          >
             Tiếp tục <span aria-hidden>→</span>
           </motion.button>
         )}

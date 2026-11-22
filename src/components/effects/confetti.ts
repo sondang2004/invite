@@ -1,6 +1,6 @@
 import confetti from 'canvas-confetti'
 
-const COLORS = ['#1f2a5c', '#c8102e', '#e8b74a', '#f7f3ec', '#8b5a2b']
+const COLORS = ['#e4be6a', '#f6df9e', '#38bdf8', '#1d4ed8', '#f4f1ea']
 
 export function burstConfetti() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -22,4 +22,3 @@ export function sideConfetti() {
   }
   frame()
 }
-
