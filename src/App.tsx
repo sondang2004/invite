@@ -1,13 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { AnimatePresence, MotionConfig } from 'motion/react'
-import campus from './assets/trinh-campus.jpg'
-import cool from './assets/trinh-cool.jpg'
-import cute from './assets/trinh-cute.jpg'
-import cutout from './assets/trinh-cutout.png'
-import danceno from './assets/trinh-dance-no.png'
-import dance from './assets/trinh-dance.jpg'
-import puton from './assets/trinh-puton.jpg'
-import ufm from './assets/trinhn-ufm.jpg'
 import { Sparkles } from './components/effects/Sparkles'
 import { AskNameStep } from './components/steps/AskNameStep'
 import { EnvelopeStep } from './components/steps/EnvelopeStep'
@@ -26,19 +18,11 @@ export default function App() {
     return (s as Step | null) ?? 'envelope'
   })
 
-  // Preload ảnh để chuyển cảnh không bị giật
-  useEffect(() => {
-    ;[campus, cool, cute, cutout, danceno, dance, puton, ufm].forEach((src) => {
-      const img = new Image()
-      img.src = src
-    })
-  }, [])
-
   const goAfterWelcome = useCallback(() => setStep(hasUrlName ? 'story' : 'askName'), [hasUrlName])
 
   return (
     <MotionConfig reducedMotion="user">
-      <main className="paper relative min-h-dvh overflow-hidden">
+      <main className="noir-bg relative min-h-dvh overflow-hidden">
         <Sparkles />
         <AnimatePresence mode="wait">
           {step === 'envelope' && <EnvelopeStep key="envelope" onOpened={() => setStep('welcome')} />}

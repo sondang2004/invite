@@ -1,173 +1,148 @@
 import { useEffect, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
-import campus from '../../assets/trinh-campus.jpg'
-import cool from '../../assets/trinh-cool.jpg'
-import cute from '../../assets/trinh-cute.jpg'
-import dance from '../../assets/trinh-dance.jpg'
-import puton from '../../assets/trinh-puton.jpg'
-import ufm from '../../assets/trinhn-ufm.jpg'
 import { EVENT } from '../../config/event'
 import { burstConfetti } from '../effects/confetti'
 import { HandwrittenText, Typewriter } from '../ui/Paper'
-import { CrownSticker, GradCap, HeartSticker, StarSticker } from '../ui/Stickers'
+import { GoldDivider, GradCap, GraduationCrest } from '../ui/Stickers'
 
 type Scene = { duration: number; render: (name: string) => ReactNode }
 
 const sceneMotion = {
   initial: { opacity: 0, scale: 1.04 },
   animate: { opacity: 1, scale: 1, transition: { duration: 0.6 } },
-  exit: { opacity: 0, scale: 0.98, transition: { duration: 0.5 } },
+  exit: { opacity: 0, scale: 0.98, transition: { duration: 0.45 } },
 }
 
-const POLAROIDS: {
-  src: string
-  caption: string
-  from: { x: number; y: number; rotate: number }
-  to: { rotate: number }
-  style: CSSProperties
-}[] = [
-  {
-    src: cute,
-    caption: 'rạng rỡ ✨',
-    from: { x: -220, y: -120, rotate: -32 },
-    to: { rotate: -9 },
-    style: { top: '0%', left: '4%', width: '44%', zIndex: 1 },
-  },
-  {
-    src: puton,
-    caption: 'cử nhân 2026 🎓',
-    from: { x: 220, y: -120, rotate: 32 },
-    to: { rotate: 8 },
-    style: { top: '1%', right: '4%', width: '44%', zIndex: 2 },
-  },
-  {
-    src: campus,
-    caption: 'kỷ niệm 🌿',
-    from: { x: -240, y: 20, rotate: 24 },
-    to: { rotate: 5 },
-    style: { top: '28%', left: '0%', width: '44%', zIndex: 3 },
-  },
-  {
-    src: dance,
-    caption: 'tự do 🕊️',
-    from: { x: 240, y: 20, rotate: -24 },
-    to: { rotate: -6 },
-    style: { top: '29%', right: '0%', width: '44%', zIndex: 4 },
-  },
-  {
-    src: ufm,
-    caption: 'hello UFM ✦',
-    from: { x: -200, y: 180, rotate: -28 },
-    to: { rotate: -7 },
-    style: { bottom: '1%', left: '5%', width: '45%', zIndex: 5 },
-  },
-  {
-    src: cool,
-    caption: 'thanh xuân ✿',
-    from: { x: 200, y: 180, rotate: 28 },
-    to: { rotate: 6 },
-    style: { bottom: '0%', right: '5%', width: '45%', zIndex: 6 },
-  },
-]
+const MILESTONES = [
+  { code: '01', label: 'HÀNH TRÌNH', title: 'Đại học Bách khoa TP.HCM', accent: 'text-bk-blue' },
+  { code: '02', label: 'NỖ LỰC', title: 'Những đêm chạy đồ án & deadline', accent: 'text-gold-light' },
+  { code: '03', label: 'CỘT MỐC 2026', title: 'Sẵn sàng cho chương mới', accent: 'text-gold' },
+] as const
 
 const SCENES: Scene[] = [
   // 1. Xin chào {tên}
   {
-    duration: 4500,
+    duration: 4200,
     render: (name) => (
-      <div className="paper flex h-full flex-col items-center justify-center px-8 text-center">
-        <motion.span initial={{ rotate: 0 }} animate={{ rotate: [0, 18, -8, 18, 0] }} transition={{ delay: 0.3, duration: 1.2 }} className="text-6xl">
-          👋
-        </motion.span>
-        <p className="mt-6 font-serif text-3xl text-ink sm:text-4xl">
-          <Typewriter text="Xin chào" delay={0.2} speed={0.07} />
+      <div className="noir-bg flex h-full flex-col items-center justify-center px-6 text-center">
+        <motion.p
+          initial={{ opacity: 0, letterSpacing: '0.5em' }}
+          animate={{ opacity: 1, letterSpacing: '0.35em' }}
+          transition={{ duration: 0.8 }}
+          className="text-xs font-semibold text-bk-blue uppercase"
+        >
+          Welcome
+        </motion.p>
+        <p className="mt-4 font-serif text-3xl text-ivory sm:text-4xl">
+          <Typewriter text="Xin chào," delay={0.25} speed={0.07} />
         </p>
-        <p className="mt-1 font-script text-6xl text-crimson sm:text-7xl">
-          <Typewriter text={name} delay={0.9} speed={0.08} />
+        <p className="gold-text mt-2 font-script text-6xl font-bold sm:text-7xl">
+          <Typewriter text={name} delay={0.95} speed={0.08} />
         </p>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1.6, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-6 h-px w-40 bg-gradient-to-r from-transparent via-gold to-transparent"
+        />
       </div>
     ),
   },
-  // 2. Ảnh sân trường – Ken Burns
+  // 2. Hành trình Bách khoa – Kinetic Blueprint
   {
-    duration: 5200,
+    duration: 5000,
     render: () => (
-      <div className="relative h-full overflow-hidden bg-navy">
-        <motion.img
-          src={campus}
-          alt=""
-          className="absolute inset-0 h-full w-full object-cover"
-          initial={{ scale: 1.05, y: 0 }}
-          animate={{ scale: 1.22, y: -20 }}
-          transition={{ duration: 5.8, ease: 'linear' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/90 via-navy/20 to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 px-4 pb-[18%] text-center text-cream">
+      <div className="noir-bg relative flex h-full flex-col items-center justify-center overflow-hidden px-5 text-center">
+        {/* Số năm nền khổng lồ trượt chậm */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.08, scale: 1.08 }}
+          transition={{ duration: 5, ease: 'linear' }}
+          className="pointer-events-none absolute font-serif text-[32vw] leading-none font-bold tracking-tighter text-gold select-none"
+        >
+          2026
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+          className="relative z-10 flex flex-col items-center"
+        >
+          <span className="rounded-full border border-bk-blue/40 bg-bk-deep/30 px-4 py-1 text-[11px] font-semibold tracking-[0.35em] text-bk-blue uppercase">
+            HCMUT · CHAPTER COMPLETED
+          </span>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="font-serif text-[clamp(1.15rem,5vw,1.875rem)] leading-snug whitespace-nowrap"
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="mt-6 font-serif text-[clamp(1.15rem,5vw,1.9rem)] leading-snug whitespace-nowrap text-ivory"
           >
             Sau những năm tháng thanh xuân
           </motion.p>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="mt-1 font-script text-[clamp(2rem,8.5vw,2.75rem)] text-gold whitespace-nowrap"
+            transition={{ delay: 1.35, duration: 0.8 }}
+            className="gold-text mt-2 font-serif text-[clamp(1.25rem,5.5vw,2.2rem)] font-bold tracking-wide whitespace-nowrap"
           >
-            dưới mái trường {EVENT.schoolShort}…
+            dưới mái trường Bách khoa TP.HCM…
           </motion.p>
-        </div>
+          <motion.div initial={{ opacity: 0, width: 0 }} animate={{ opacity: 1, width: 180 }} transition={{ delay: 2, duration: 0.8 }} className="mt-6">
+            <GoldDivider />
+          </motion.div>
+        </motion.div>
       </div>
     ),
   },
-  // 3. Polaroid xếp chồng ở giữa màn hình (gối nhẹ các góc, không che khuất mặt)
+  // 3. Cột mốc thành tựu (không dùng ảnh – thẻ dark glass ánh kim bay vào)
   {
-    duration: 7200,
+    duration: 6000,
     render: () => (
-      <div className="paper relative flex h-full flex-col items-center justify-center overflow-hidden px-4">
-        <div className="relative h-[52dvh] w-[min(84vw,330px)]">
-          {POLAROIDS.map((p, idx) => (
+      <div className="noir-bg relative flex h-full flex-col items-center justify-center overflow-hidden px-5">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 90, damping: 14, delay: 0.15 }}
+          className="mb-5"
+        >
+          <GraduationCrest className="h-24 w-24 drop-shadow-[0_0_24px_rgba(228,190,106,0.3)]" />
+        </motion.div>
+
+        <div className="flex w-full max-w-sm flex-col gap-3">
+          {MILESTONES.map((m, idx) => (
             <motion.div
-              key={p.caption}
-              initial={{ x: p.from.x, y: p.from.y, rotate: p.from.rotate, opacity: 0, scale: 0.85 }}
-              animate={{ x: 0, y: 0, rotate: p.to.rotate, opacity: 1, scale: 1 }}
-              transition={{ type: 'spring', stiffness: 75, damping: 14, delay: 0.2 + idx * 0.55 }}
-              style={p.style}
-              className="absolute rounded-[2px] bg-white p-1.5 pb-6 shadow-[0_12px_26px_rgba(31,42,92,0.22)]"
+              key={m.code}
+              initial={{ x: idx % 2 === 0 ? -120 : 120, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 85, damping: 15, delay: 0.45 + idx * 0.55 }}
+              className="noir-card flex items-center gap-4 rounded-lg border border-gold/30 px-4 py-3.5 shadow-[0_12px_28px_rgba(0,0,0,0.5)]"
             >
-              <img src={p.src} alt="" className="aspect-[4/4.3] w-full object-cover" draggable={false} />
-              <span className="absolute bottom-1 left-0 w-full text-center font-script text-xs text-ink/75 sm:text-sm">{p.caption}</span>
+              <span className={`font-serif text-2xl font-bold ${m.accent}`}>{m.code}</span>
+              <div className="h-8 w-px bg-gold/25" />
+              <div className="text-left">
+                <p className="text-[10px] font-semibold tracking-[0.3em] text-muted uppercase">{m.label}</p>
+                <p className="mt-0.5 text-sm font-semibold text-ivory sm:text-base">{m.title}</p>
+              </div>
             </motion.div>
           ))}
-
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1, rotate: -12 }} transition={{ delay: 3.4, type: 'spring' }} className="absolute -top-3 left-[44%] z-20 w-9">
-            <CrownSticker />
-          </motion.div>
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 3.6, type: 'spring' }} className="absolute top-[46%] -right-3 z-20 w-8">
-            <HeartSticker />
-          </motion.div>
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1, rotate: 20 }} transition={{ delay: 3.8, type: 'spring' }} className="absolute bottom-[22%] -left-3 z-20 w-7">
-            <StarSticker />
-          </motion.div>
         </div>
+
         <motion.p
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.5, duration: 0.7 }}
-          className="mt-7 text-center font-serif text-[clamp(1.05rem,4.6vw,1.875rem)] whitespace-nowrap text-ink"
+          transition={{ delay: 2.3, duration: 0.7 }}
+          className="mt-7 text-center font-serif text-[clamp(1.05rem,4.6vw,1.875rem)] whitespace-nowrap text-ivory"
         >
-          …cuối cùng mình cũng <span className="text-crimson">tốt nghiệp</span> rồi! 🎓
+          …cuối cùng mình cũng <span className="gold-text font-bold">tốt nghiệp</span> rồi! 🎓
         </motion.p>
       </div>
     ),
   },
-  // 4. Tung mũ + confetti + lời mời
+  // 4. Tung mũ ánh kim + confetti + lời mời
   {
-    duration: 5500,
+    duration: 5200,
     render: (name) => <CapTossScene name={name} />,
   },
 ]
@@ -178,31 +153,41 @@ function CapTossScene({ name }: { name: string }) {
     return () => clearTimeout(t)
   }, [])
   return (
-    <div className="flex h-full flex-col items-center justify-center bg-gradient-to-b from-navy to-[#2c3a7c] px-8 text-center text-cream">
+    <div className="noir-bg flex h-full flex-col items-center justify-center px-6 text-center text-ivory">
       <motion.div
         initial={{ y: 260, rotate: 0, opacity: 0 }}
-        animate={{ y: [260, -90, -30], rotate: [0, 540, 720], opacity: 1 }}
+        animate={{ y: [260, -90, -24], rotate: [0, 540, 720], opacity: 1 }}
         transition={{ duration: 1.4, times: [0, 0.6, 1], ease: 'easeOut' }}
         className="w-28"
       >
-        <GradCap style={{ filter: 'drop-shadow(0 8px 12px rgba(0,0,0,0.4)) brightness(1.6)' }} />
+        <GradCap style={{ filter: 'drop-shadow(0 12px 24px rgba(228,190,106,0.45))' }} />
       </motion.div>
-      <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: 0.7 }} className="font-serif text-2xl leading-snug sm:text-3xl">
-        Và mình rất muốn mời
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.05, duration: 0.7 }}
+        className="font-serif text-[clamp(1.2rem,5vw,1.875rem)] leading-snug whitespace-nowrap text-ivory/90"
+      >
+        Và {EVENT.hostShort} rất muốn mời
       </motion.p>
-      <div className="my-1">
-        <HandwrittenText delay={1.6} duration={1.2} className="font-script text-6xl text-gold sm:text-7xl">
+      <div className="my-2">
+        <HandwrittenText delay={1.55} duration={1.2} className="gold-text font-script text-6xl font-bold sm:text-7xl">
           {name}
         </HandwrittenText>
       </div>
-      <motion.p initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2.4, duration: 0.7 }} className="font-serif text-[clamp(1.2rem,5.2vw,1.875rem)] whitespace-nowrap">
-        đến chung vui cùng mình! 💐
+      <motion.p
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2.35, duration: 0.7 }}
+        className="font-serif text-[clamp(1.15rem,5vw,1.875rem)] whitespace-nowrap text-ivory/90"
+      >
+        đến chung vui cùng mình! 🥂
       </motion.p>
     </div>
   )
 }
 
-/** Step 5: chuỗi cảnh chuyển liên tục kiểu story, chạm để tua */
+/** Step 5: chuỗi cảnh chuyển động typography & motion graphics, chạm để tua */
 export function StoryStep({ name, onDone }: { name: string; onDone: () => void }) {
   const [index, setIndex] = useState(0)
   const finished = index >= SCENES.length
@@ -234,9 +219,9 @@ export function StoryStep({ name, onDone }: { name: string; onDone: () => void }
       {/* Thanh tiến trình kiểu story */}
       <div className="absolute inset-x-0 top-0 z-30 flex gap-1.5 px-4 pt-[max(0.9rem,env(safe-area-inset-top))]">
         {SCENES.map((s, i) => (
-          <div key={i} className="h-[3px] flex-1 overflow-hidden rounded-full bg-black/15">
+          <div key={i} className="h-[3px] flex-1 overflow-hidden rounded-full bg-white/15">
             <motion.div
-              className="h-full origin-left rounded-full bg-crimson/80"
+              className="h-full origin-left rounded-full bg-gradient-to-r from-bk-blue to-gold"
               initial={{ scaleX: i < index ? 1 : 0 }}
               animate={{ scaleX: i < index ? 1 : i === index ? 1 : 0 }}
               transition={i === index ? { duration: s.duration / 1000, ease: 'linear' } : { duration: 0 }}
@@ -244,12 +229,16 @@ export function StoryStep({ name, onDone }: { name: string; onDone: () => void }
           </div>
         ))}
       </div>
-      {!finished && <p className="hint-pulse absolute inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 text-center text-xs text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.55)]">chạm để tiếp tục</p>}
+      {!finished && (
+        <p className="hint-pulse absolute inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-30 text-center text-xs tracking-[0.2em] text-ivory/70 uppercase">
+          chạm để tiếp tục
+        </p>
+      )}
 
-      {/* Lóe sáng chuyển sang thiệp */}
+      {/* Chuyển cảnh mượt sang thiệp */}
       {finished && (
         <motion.div
-          className="absolute inset-0 z-40 bg-[#fffdf8]"
+          className="absolute inset-0 z-40 bg-[#070b14]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.45, ease: 'easeIn' }}

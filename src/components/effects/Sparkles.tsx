@@ -1,20 +1,20 @@
 import { useMemo } from 'react'
 
-const GLYPHS = ['✦', '✧', '•', '❀', '✦', '♡']
-const COLORS = ['#e8b74a', '#c8102e', '#1f2a5c', '#d4a373']
+const GLYPHS = ['✦', '◆', '•', '✧', '◇', '·']
+const COLORS = ['#e4be6a', '#f6df9e', '#38bdf8', '#94a3b8']
 
-/** Các hạt lấp lánh bay nhẹ ở nền (CSS animation, rất nhẹ cho mobile) */
-export function Sparkles({ count = 16 }: { count?: number }) {
+/** Các hạt bụi vàng & ánh xanh bay nhẹ ở nền tối */
+export function Sparkles({ count = 18 }: { count?: number }) {
   const items = useMemo(
     () =>
       Array.from({ length: count }, (_, i) => ({
         left: `${(i * 97) % 100}%`,
-        size: 8 + ((i * 37) % 12),
-        duration: 12 + ((i * 53) % 12),
+        size: 6 + ((i * 29) % 10),
+        duration: 13 + ((i * 53) % 13),
         delay: -((i * 41) % 20),
         glyph: GLYPHS[i % GLYPHS.length],
         color: COLORS[i % COLORS.length],
-        opacity: 0.25 + ((i * 13) % 40) / 100,
+        opacity: 0.18 + ((i * 13) % 35) / 100,
       })),
     [count],
   )
@@ -39,4 +39,3 @@ export function Sparkles({ count = 16 }: { count?: number }) {
     </div>
   )
 }
-
